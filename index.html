@@ -462,63 +462,7 @@
                 }
             });
         }
-        
-        // --- TOURNAMENTS LOGIC ---
-        function loadTournaments() {
-            onValue(ref(db, 'tournaments'), (snap) => {
-                const list = document.getElementById('tournaments-list');
-                list.innerHTML = "";
-                const data = snap.val();
-                if (data) {
-                    Object.keys(data).reverse().forEach(id => {
-                        const t = data[id];
-                        const info = t.info || {};
-                        const schedule = t.schedule || {};
-                        const participantsCount = t.participants ? Object.keys(t.participants).length : 0;
-                        const isFull = participantsCount >= 24;
 
-                        const btnClass = isFull ? "bg-red-600 opacity-50 cursor-not-allowed" : "bg-green-600 active:scale-95";
-                        const btnText = isFull ? "LIMIT RIVE (24)" : "PATISIPE";
-
-                        list.innerHTML += `
-                        <div class="glass-card flex-shrink-0 w-72 p-5 rounded-[2.5rem] border-t-4 border-yellow-500 animate__animated animate__fadeIn">
-                            <img src="${info.image_bg || 'https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg'}" class="w-full h-36 object-cover rounded-3xl mb-4 border border-white/5">
-                            
-                            <div class="space-y-1 mb-4">
-                                <h3 class="text-xs font-black uppercase text-blue-500">ADMIN: PRIME GAMING</h3>
-                                <h2 class="text-lg font-black uppercase text-white leading-none">${info.game || 'Tournoi'}</h2>
-                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">${info.type2 || 'Battle Royale'}</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-2 mb-4 bg-black/40 p-3 rounded-2xl border border-white/5">
-                                <div class="text-[9px] font-bold text-gray-400 uppercase">📅 Dat: <span class="text-white">${schedule.start_date || '--'}</span></div>
-                                <div class="text-[9px] font-bold text-gray-400 uppercase">⏰ Lè: <span class="text-white">${schedule.start_time || '--'}</span></div>
-                                <div class="text-[9px] font-bold text-gray-400 uppercase">👥 Moun: <span class="${isFull ? 'text-red-500' : 'text-green-500'}">${participantsCount}/24</span></div>
-                                <div class="text-[9px] font-bold text-gray-400 uppercase">💰 Pri: <span class="text-yellow-500">${info.price || 'FREE'} HTG</span></div>
-                            </div>
-
-                            <button onclick="${isFull ? '' : `joinTournament('${id}')`}" class="w-full ${btnClass} py-4 rounded-2xl font-black text-[10px] uppercase shadow-lg transition-all">
-                                ${btnText}
-                            </button>
-                        </div>`;
-                    });
-                } else {
-                    list.innerHTML = "<p class='text-[10px] opacity-30 italic p-4 text-center w-full'>Ap tann tourwa admin yo...</p>";
-                }
-            });
-        }
-
-        window.joinTournament = (id) => {
-            const user = auth.currentUser;
-            if(!user) return;
-            const entryRef = ref(db, `tournaments/${id}/participants/${user.uid}`);
-            set(entryRef, {
-                username: currentUserData.username,
-                joined_at: serverTimestamp()
-            }).then(() => alert("Ou enskri ak siksè!"));
-        };
-
-    
         // --- NOUVO: CHACHE MATCH MWEN YO NAN PWOFIL ---
         function loadMyMatches() {
             onValue(ref(db, 'challenges'), (snap) => {
@@ -711,4 +655,4 @@
         window.signOutUser = () => signOut(auth);
     </script>
 </body>
-                    </html>
+    </html>
