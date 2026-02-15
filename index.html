@@ -6,7 +6,6 @@
     <title>PRISME GAMING HT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b0e14; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .glass-card { background: rgba(22, 27, 34, 0.9); border: 1px solid rgba(59, 130, 246, 0.3); }
@@ -21,13 +20,8 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .modal-bg { backdrop-filter: blur(10px); background: rgba(0,0,0,0.8); }
 
-        /* Chat Styles */
-        .msg-container { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 12px; }
-        .msg-mine { flex-direction: row-reverse; }
-        .msg-bubble { padding: 10px 14px; max-width: 75%; font-size: 13px; line-height: 1.4; position: relative; }
-        .msg-mine .msg-bubble { background: #2563eb; color: white; border-radius: 1.2rem 1.2rem 0 1.2rem; }
-        .msg-other .msg-bubble { background: #1f2937; color: #e5e7eb; border-radius: 1.2rem 1.2rem 1.2rem 0; }
-        .chat-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; flex-shrink: 0; }
+        .msg-mine { background: #2563eb; border-radius: 1.2rem 0 1.2rem 1.2rem; }
+        .msg-other { background: #1f2937; border-radius: 0 1.2rem 1.2rem 1.2rem; }
 
         .game-select-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
         .game-option { flex: 0 0 80px; text-align: center; cursor: pointer; opacity: 0.5; transition: 0.3s; }
@@ -36,9 +30,8 @@
         .game-option.selected img { border-color: #3b82f6; }
         .game-option span { font-size: 9px; font-weight: bold; text-transform: uppercase; display: block; }
         
-        /* Floating Icons Styles */
         .floating-btn-container { position: fixed; bottom: 100px; right: 24px; display: flex; flex-direction: column; gap: 15px; z-index: 40; }
-        .float-btn { width: 56px; height: 56px; border-radius: 50%; display: flex; items-center; justify-content: center; shadow-2xl; transition: 0.3s; }
+        .float-btn { width: 56px; height: 56px; border-radius: 50%; display: flex; items-center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -79,11 +72,10 @@
         <div class="mt-6 px-4">
             <div id="tournaments-section" class="mb-8">
                 <div class="flex items-center gap-2 mb-4">
-                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 13v5H7v2h10v-2h-4v-5c1.71 0 3.21-.98 4-2.42 2.47-.31 4.39-2.39 4.39-4.94V4c0-1.1-.9-2-2-2zm-1 5c0 1.1-.9 2-2 2h-1V4h3v3zM7 9c-1.1 0-2-.9-2-2V4h3v5H7z"/></svg>
                     <h2 class="text-[11px] font-black text-yellow-500 uppercase tracking-[0.2em]">Tournois Officiels</h2>
                 </div>
-                <div id="tournaments-list" class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-                    </div>
+                <div id="tournaments-list" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
             </div>
 
             <div class="game-select-container no-scrollbar mb-6" id="home-game-filter">
@@ -102,37 +94,14 @@
         </div>
     </section>
 
-    <section id="profile-page" class="page pb-24">
-        <div class="p-6 pt-12 flex flex-col items-center">
-            <div class="relative profile-img-container mb-4">
-                <img id="profile-pic-display" src="https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg" class="w-24 h-24 rounded-full border-4 border-blue-500 object-cover shadow-2xl">
-                <label for="profile-upload" class="edit-overlay absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 transition-opacity cursor-pointer">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                </label>
-                <input type="file" id="profile-upload" class="hidden" accept="image/*">
-            </div>
-            <h2 id="profile-username" class="text-xl font-black uppercase tracking-widest">--</h2>
-            <p id="profile-email" class="text-xs text-gray-400 mb-6">--</p>
-
-            <div class="w-full glass-card p-4 rounded-3xl mb-4 flex justify-between items-center">
-                <span class="text-xs font-bold text-gray-400 uppercase">Balans</span>
-                <span id="profile-balance" class="text-xl font-black text-green-400">0 HTG</span>
-            </div>
-             <button onclick="logout()" class="w-full bg-red-600/20 text-red-500 py-3 rounded-2xl text-xs font-black uppercase mt-4">Dekonekte</button>
-        </div>
-    </section>
-
     <div id="floating-controls" class="hidden floating-btn-container">
-        <button onclick="document.getElementById('tournaments-section').scrollIntoView({behavior:'smooth'})" class="float-btn bg-yellow-500 animate__animated animate__bounceIn">
-            <svg class="w-7 h-7 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M19,5h-2V3H7v2H5C3.9,5,3,5.9,3,7v1c0 2.55,1.92,4.63,4.39,4.94c0.63,1.5,1.98,2.63,3.61,2.96V19H7v2h10v-2h-4v-3.1 c1.63-0.33,2.98-1.46,3.61-2.96C19.08,12.63,21,10.55,21,8V7C21,5.9,20.1,5,19,5z M5,8V7h2v3.82C5.84,10.4,5,9.3,5,8z M19,8 c0,1.3-0.84,2.4-2,2.82V7h2V8z"/></svg>
-        </button>
         <button onclick="toggleModal('chat-modal', true)" class="float-btn bg-blue-600 animate__animated animate__bounceIn">
             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </button>
     </div>
 
     <div id="chat-modal" class="hidden fixed inset-0 z-[200] flex flex-col modal-bg animate__animated animate__slideInUp">
-        <header class="p-6 flex justify-between items-center border-b border-white/10 bg-[#0b0e14]">
+        <header class="p-6 flex justify-between items-center border-b border-white/10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-black italic text-white shadow-lg">P</div>
                 <div>
@@ -140,75 +109,21 @@
                     <p class="text-[9px] text-green-500 font-bold uppercase">An liy kounye a</p>
                 </div>
             </div>
-            <button onclick="toggleModal('chat-modal', false)" class="bg-white/5 p-3 rounded-full text-gray-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
+            <button onclick="toggleModal('chat-modal', false)" class="bg-white/5 p-3 rounded-full text-gray-400"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
         </header>
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col no-scrollbar bg-black/50">
-            </div>
-        <div class="p-6 border-t border-white/10 bg-[#0b0e14]">
-            <div class="flex gap-2 bg-white/5 p-2 rounded-[2rem] border border-white/10 focus-within:border-blue-500">
-                <input type="text" id="chat-input" placeholder="Ekri yon mesaj..." class="flex-1 bg-transparent px-4 py-2 outline-none text-sm">
-                <button id="send-msg-btn" class="bg-blue-600 p-3 rounded-full shadow-lg active:scale-90">
-                    <svg class="w-5 h-5 rotate-90" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                </button>
-            </div>
-        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar"></div>
+        <div class="p-4 border-t border-white/10"><div class="flex gap-2 bg-white/5 p-2 rounded-full border border-white/10"><input type="text" id="chat-input" placeholder="Mesaj..." class="flex-1 bg-transparent px-4 outline-none text-sm"><button id="send-msg-btn" class="bg-blue-600 p-3 rounded-full shadow-lg"><svg class="w-5 h-5 rotate-90" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button></div></div>
     </div>
 
-    <div id="bet-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 modal-bg">
-        <div class="glass-card w-full max-w-sm p-6 rounded-[2.5rem]">
-            <h2 class="text-xl font-black italic text-blue-500 uppercase mb-4">Lage defi</h2>
-            <div class="space-y-3 overflow-y-auto max-h-[60vh] no-scrollbar">
-                <input type="hidden" id="bet-game" value="Free Fire">
-                <div class="grid grid-cols-2 gap-2">
-                    <select id="bet-type-1" class="p-4 rounded-2xl input-field text-[11px] font-bold uppercase"></select>
-                    <select id="bet-type-2" class="p-4 rounded-2xl input-field text-[11px] font-bold uppercase"></select>
-                </div>
-                <input type="text" id="bet-uid" placeholder="ID Jwèt ou (UID)" class="w-full p-4 rounded-2xl input-field text-sm">
-                <input type="text" id="bet-room" placeholder="ID Room" class="w-full p-4 rounded-2xl input-field text-sm">
-                <input type="text" id="bet-room-pass" placeholder="Modpas Room" class="w-full p-4 rounded-2xl input-field text-sm">
-                <input type="number" id="bet-amount" placeholder="HTG (Min 100)" class="w-full p-4 rounded-2xl input-field text-sm">
-                <textarea id="bet-rules" placeholder="Règleman..." class="w-full p-4 rounded-2xl input-field text-sm h-16"></textarea>
-                <button id="confirm-bet-btn" class="w-full bg-blue-600 py-4 rounded-2xl font-black uppercase text-xs">Pibliye</button>
-                <button onclick="toggleModal('bet-modal', false)" class="w-full text-gray-500 text-[10px] font-bold uppercase py-2">Anile</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="join-modal" class="hidden fixed inset-0 z-[150] flex items-center justify-center p-4 modal-bg">
-        <div class="glass-card w-full max-w-sm p-6 rounded-[2.5rem] animate__animated animate__zoomIn">
-            <div class="text-center mb-4"><h2 class="text-xl font-black italic text-blue-500 uppercase">DETAY DEFI</h2></div>
-            <div class="space-y-3 bg-black/40 p-4 rounded-3xl border border-white/5 mb-6">
-                <div class="flex justify-between items-center text-[10px] uppercase font-black">Jwèt: <span id="join-game" class="text-white">--</span></div>
-                <div class="flex justify-between items-center text-[10px] uppercase font-black">Tip: <span id="join-type" class="text-blue-400">--</span></div>
-                <div class="flex justify-between items-center text-[10px] uppercase font-black">Miz: <span id="join-amount" class="text-green-400 text-sm">--</span></div>
-                <div class="flex justify-between items-center text-[10px] uppercase font-black">ID Room: <span id="join-room" class="text-white">--</span></div>
-                <div id="join-pass-container" class="hidden flex justify-between items-center bg-blue-500/10 p-2 rounded-lg"><span class="text-[10px] font-black uppercase">Modpas:</span> <span id="join-pass" class="text-blue-300">--</span></div>
-            </div>
-            <button id="confirm-join-btn" class="w-full bg-blue-600 py-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 transition-all">AKSEPTE DEFI A</button>
-            <button onclick="toggleModal('join-modal', false)" class="w-full text-gray-500 text-[10px] font-bold uppercase mt-2">Anile</button>
-        </div>
-    </div>
-
-    <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 h-22 bg-[#0b0e14]/95 border-t border-white/5 flex justify-around items-center px-6 z-50 backdrop-blur-lg">
-        <button onclick="switchPage('home-page')" id="nav-home" class="flex flex-col items-center gap-1">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span class="text-[9px] font-bold uppercase">Akèy</span>
-        </button>
-        <button onclick="toggleModal('bet-modal', true)" class="bg-blue-600 w-14 h-14 rounded-2xl flex items-center justify-center -translate-y-5 shadow-2xl border-4 border-[#0b0e14]">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-        </button>
-        <button onclick="switchPage('profile-page')" id="nav-profile" class="flex flex-col items-center gap-1 text-gray-600">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            <span class="text-[9px] font-bold uppercase">Pwofil</span>
-        </button>
+    <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 h-20 bg-[#0b0e14]/95 border-t border-white/5 flex justify-around items-center px-6 z-50 backdrop-blur-lg">
+        <button onclick="switchPage('home-page')" class="flex flex-col items-center gap-1"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span class="text-[9px] font-bold uppercase">Akèy</span></button>
+        <button onclick="switchPage('profile-page')" class="flex flex-col items-center gap-1 text-gray-600"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span class="text-[9px] font-bold uppercase">Pwofil</span></button>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, set, onValue, push, serverTimestamp, update, remove, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, onValue, push, serverTimestamp, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCHVG_0BCd0V_lFSmg3_2qyC5rKclG-b0M",
@@ -226,120 +141,59 @@
         let currentUserData = null;
         let isSignup = false;
 
-        // --- UPDATED TOURNAMENT LOGIC ---
+        // --- TOURNAMENTS LOGIC ---
         function loadTournaments() {
             onValue(ref(db, 'tournaments'), (snap) => {
                 const list = document.getElementById('tournaments-list');
                 list.innerHTML = "";
                 const data = snap.val();
-                
                 if (data) {
                     Object.keys(data).reverse().forEach(id => {
                         const t = data[id];
-                        const limit = t.slots || 24; // Default limit 24 if not set
-                        
-                        // Count participants (approved + pending)
-                        let count = 0;
-                        let userStatus = null; // null, 'pending', 'joined'
-                        
-                        if (t.participants) {
-                            count = Object.keys(t.participants).length;
-                            if (auth.currentUser && t.participants[auth.currentUser.uid]) {
-                                userStatus = t.participants[auth.currentUser.uid].status || 'joined';
-                            }
-                        }
+                        const info = t.info || {};
+                        const schedule = t.schedule || {};
+                        const participantsCount = t.participants ? Object.keys(t.participants).length : 0;
+                        const isFull = participantsCount >= 24;
 
-                        const isFull = count >= limit;
-                        
-                        // Button Logic
-                        let btnText = "PATISIPE";
-                        let btnClass = "bg-blue-600 hover:bg-blue-700";
-                        let isDisabled = "";
-                        let onClick = `joinTournament('${id}')`;
-
-                        if (userStatus === 'pending') {
-                            btnText = "AN ATTENTE";
-                            btnClass = "bg-yellow-600 cursor-not-allowed opacity-80";
-                            isDisabled = "disabled";
-                            onClick = "";
-                        } else if (userStatus === 'joined') {
-                            btnText = "INSCRIT";
-                            btnClass = "bg-green-600 cursor-not-allowed";
-                            isDisabled = "disabled";
-                            onClick = "";
-                        } else if (isFull) {
-                            btnText = "SOLD OUT";
-                            btnClass = "bg-red-600/50 cursor-not-allowed";
-                            isDisabled = "disabled";
-                            onClick = "";
-                        }
-
-                        // Date/Time Display
-                        const dateDisplay = t.date ? t.date : "N/A";
-                        const timeDisplay = t.time ? t.time : "N/A";
+                        const btnClass = isFull ? "bg-red-600 opacity-50 cursor-not-allowed" : "bg-green-600 active:scale-95";
+                        const btnText = isFull ? "LIMIT RIVE (24)" : "PATISIPE";
 
                         list.innerHTML += `
-                        <div class="glass-card flex-shrink-0 w-72 p-4 rounded-[2rem] border-t-4 border-yellow-500 animate__animated animate__fadeIn relative overflow-hidden">
-                            <img src="${t.image || 'https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg'}" class="w-full h-32 object-cover rounded-2xl mb-3 border border-white/5">
+                        <div class="glass-card flex-shrink-0 w-72 p-5 rounded-[2.5rem] border-t-4 border-yellow-500 animate__animated animate__fadeIn">
+                            <img src="${info.image_bg || 'https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg'}" class="w-full h-36 object-cover rounded-3xl mb-4 border border-white/5">
                             
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-sm font-black uppercase text-white truncate w-2/3">${t.title || 'Tournoi'}</h3>
-                                <span class="bg-yellow-500/20 text-yellow-500 text-[9px] font-black px-2 py-1 rounded-lg border border-yellow-500/30">${count}/${limit}</span>
+                            <div class="space-y-1 mb-4">
+                                <h3 class="text-xs font-black uppercase text-blue-500">ADMIN: PRIME GAMING</h3>
+                                <h2 class="text-lg font-black uppercase text-white leading-none">${info.game || 'Tournoi'}</h2>
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">${info.type2 || 'Battle Royale'}</p>
                             </div>
 
-                            <div class="space-y-1 mb-4 bg-black/40 p-2 rounded-xl">
-                                <div class="flex items-center gap-2 text-[10px] text-gray-300">
-                                    <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    <span>${dateDisplay}</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-[10px] text-gray-300">
-                                    <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    <span>${timeDisplay}</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-[10px] text-gray-300">
-                                    <svg class="w-3 h-3 ${t.status === 'open' ? 'text-green-500' : 'text-red-500'}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-                                    <span class="uppercase font-bold ${t.status === 'open' ? 'text-green-400' : 'text-red-400'}">${t.status || 'Fèmen'}</span>
-                                </div>
+                            <div class="grid grid-cols-2 gap-2 mb-4 bg-black/40 p-3 rounded-2xl border border-white/5">
+                                <div class="text-[9px] font-bold text-gray-400 uppercase">📅 Dat: <span class="text-white">${schedule.start_date || '--'}</span></div>
+                                <div class="text-[9px] font-bold text-gray-400 uppercase">⏰ Lè: <span class="text-white">${schedule.start_time || '--'}</span></div>
+                                <div class="text-[9px] font-bold text-gray-400 uppercase">👥 Moun: <span class="${isFull ? 'text-red-500' : 'text-green-500'}">${participantsCount}/24</span></div>
+                                <div class="text-[9px] font-bold text-gray-400 uppercase">💰 Pri: <span class="text-yellow-500">${info.price || 'FREE'} HTG</span></div>
                             </div>
 
-                            <div class="flex gap-2">
-                                <button onclick="${onClick}" ${isDisabled} class="flex-1 ${btnClass} py-3 rounded-xl font-black text-[10px] uppercase shadow-lg transition-all active:scale-95">
-                                    ${btnText}
-                                </button>
-                                <div class="bg-black/50 px-3 py-2 rounded-xl border border-white/5 flex flex-col items-center justify-center min-w-[60px]">
-                                    <span class="text-[8px] text-gray-400 uppercase">Pri</span>
-                                    <span class="text-[10px] font-black text-green-400">${t.price || 'FREE'}</span>
-                                </div>
-                            </div>
+                            <button onclick="${isFull ? '' : `joinTournament('${id}')`}" class="w-full ${btnClass} py-4 rounded-2xl font-black text-[10px] uppercase shadow-lg transition-all">
+                                ${btnText}
+                            </button>
                         </div>`;
                     });
                 } else {
-                    list.innerHTML = "<p class='text-[10px] opacity-30 italic p-4'>Okenn tournoi disponib...</p>";
+                    list.innerHTML = "<p class='text-[10px] opacity-30 italic p-4 text-center w-full'>Ap tann tourwa admin yo...</p>";
                 }
             });
         }
 
-        // Make function available globally
-        window.joinTournament = async (tournamentId) => {
-            if (!auth.currentUser) return alert("Ou dwe konekte!");
-            
-            // Confirm dialog
-            if (!confirm("Ou vle patisipe nan tournoi sa a? Admin an ap resevwa demann ou an.")) return;
-
-            const userRef = ref(db, `tournaments/${tournamentId}/participants/${auth.currentUser.uid}`);
-            
-            // Set user status to pending
-            try {
-                await set(userRef, {
-                    uid: auth.currentUser.uid,
-                    username: currentUserData.username || "Unknown",
-                    timestamp: serverTimestamp(),
-                    status: "pending" // Admin must approve
-                });
-                alert("Demann voye! Tann admin an asepte w.");
-            } catch (error) {
-                alert("Erè: " + error.message);
-            }
+        window.joinTournament = (id) => {
+            const user = auth.currentUser;
+            if(!user) return;
+            const entryRef = ref(db, `tournaments/${id}/participants/${user.uid}`);
+            set(entryRef, {
+                username: currentUserData.username,
+                joined_at: serverTimestamp()
+            }).then(() => alert("Ou enskri ak siksè!"));
         };
 
         // --- AUTH & SYNC ---
@@ -347,9 +201,8 @@
             if (user && user.emailVerified) {
                 switchPage('home-page');
                 syncUserData(user.uid);
-                loadChallenges();
-                loadChatMessages();
                 loadTournaments();
+                loadChatMessages();
                 document.getElementById('floating-controls').classList.remove('hidden');
             } else { 
                 switchPage('auth-page'); 
@@ -361,13 +214,7 @@
             onValue(ref(db, `users/${uid}`), (snap) => {
                 currentUserData = snap.val();
                 if (currentUserData) {
-                    document.getElementById('user-balance').innerText = Number(currentUserData.balance || 0).toLocaleString();
-                    document.getElementById('profile-username').innerText = currentUserData.username;
-                    document.getElementById('profile-email').innerText = auth.currentUser.email;
-                    document.getElementById('profile-balance').innerText = (currentUserData.balance || 0) + " HTG";
-                    if(currentUserData.profile_pic) {
-                         document.getElementById('profile-pic-display').src = currentUserData.profile_pic;
-                    }
+                    document.getElementById('user-balance').innerText = (currentUserData.balance || 0).toLocaleString();
                 }
             });
         }
@@ -376,187 +223,68 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('page-active', 'flex-active'));
             document.getElementById(id).classList.add(id === 'auth-page' ? 'flex-active' : 'page-active');
             document.getElementById('bottom-nav').classList.toggle('hidden', id === 'auth-page');
-            
-            // Highlight nav icons
-            document.getElementById('nav-home').classList.toggle('nav-active', id === 'home-page');
-            document.getElementById('nav-profile').classList.toggle('nav-active', id === 'profile-page');
         };
 
         window.toggleModal = (id, show) => document.getElementById(id).classList.toggle('hidden', !show);
 
-        // --- CHAT WITH PROFILE PICS ---
+        document.getElementById('main-btn').onclick = async () => {
+            const em = document.getElementById('email').value.trim();
+            const pw = document.getElementById('password').value;
+            if(!em || !pw) return alert("Ranpli tout bwat yo");
+            try {
+                if (isSignup) {
+                    const res = await createUserWithEmailAndPassword(auth, em, pw);
+                    await set(ref(db, `users/${res.user.uid}`), { 
+                        username: document.getElementById('username').value, 
+                        phone: document.getElementById('phone').value, 
+                        balance: 0 
+                    });
+                    await sendEmailVerification(res.user);
+                    alert("Tcheke email ou pou verifye kont la!");
+                } else { 
+                    await signInWithEmailAndPassword(auth, em, pw); 
+                }
+            } catch(e) { alert(e.message); }
+        };
+
+        document.getElementById('toggle-btn').onclick = () => {
+            isSignup = !isSignup;
+            document.getElementById('signup-fields').classList.toggle('hidden');
+            document.getElementById('mode-title').innerText = isSignup ? "Kreyasyon Kont" : "Koneksyon";
+            document.getElementById('main-btn').innerText = isSignup ? "ENSKRI" : "KONEKTE";
+        };
+
         function loadChatMessages() {
-            const chatQuery = query(ref(db, 'chat'), limitToLast(50));
+            const chatQuery = query(ref(db, 'chat'), limitToLast(30));
             onValue(chatQuery, (snap) => {
                 const chatBox = document.getElementById('chat-messages');
                 chatBox.innerHTML = "";
-                const data = snap.val();
-                if (data) {
-                    Object.keys(data).forEach(id => {
-                        const m = data[id];
-                        const isMine = m.sender_id === auth.currentUser.uid;
-                        // Use saved profile pic or default
-                        const pic = m.sender_pic || 'https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg';
-                        
-                        chatBox.innerHTML += `
-                        <div class="msg-container ${isMine ? 'msg-mine' : 'msg-other'} animate__animated animate__fadeInUp">
-                            <img src="${pic}" class="chat-avatar">
-                            <div class="msg-bubble">
-                                <p class="font-bold text-[9px] mb-1 opacity-50 uppercase">${isMine ? 'Mwen' : (m.sender_name || 'User')}</p>
-                                ${m.text}
-                            </div>
-                        </div>`;
-                    });
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
+                snap.forEach(child => {
+                    const m = child.val();
+                    const isMine = m.sender_id === auth.currentUser.uid;
+                    chatBox.innerHTML += `
+                    <div class="flex ${isMine ? 'justify-end' : 'justify-start'} animate__animated animate__fadeInUp">
+                        <div class="${isMine ? 'msg-mine' : 'msg-other'} p-3 max-w-[80%] shadow-md">
+                            <p class="text-[8px] font-black opacity-50 uppercase mb-1">${m.sender_name}</p>
+                            <p class="text-xs">${m.text}</p>
+                        </div>
+                    </div>`;
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
 
         document.getElementById('send-msg-btn').onclick = () => {
             const inp = document.getElementById('chat-input');
-            const txt = inp.value.trim();
-            if (txt) {
-                push(ref(db, 'chat'), {
-                    text: txt,
-                    sender_id: auth.currentUser.uid,
-                    sender_name: currentUserData ? currentUserData.username : "User",
-                    sender_pic: currentUserData && currentUserData.profile_pic ? currentUserData.profile_pic : "https://res.cloudinary.com/dcpcbglsw/image/upload/v1770997001/c74e5bf57d250c1bfc7b0d96f39f42c7_wkpgqd.jpg",
-                    timestamp: serverTimestamp()
-                });
-                inp.value = "";
-            }
-        };
-
-        // --- GAME FILTER & BETTING (Kept Intact) ---
-        const gameOptions = {
-            "Free Fire": { types1: ["1v1", "2v2", "3v3", "4v4"], types2: ["Room Battle Royal", "Room Clash Squad", "Todo Rojo"] },
-            "CODM": { types1: ["1v1", "2v2", "5v5"], types2: ["Multiplayer", "Battle Royal", "Snipers Only"] },
-            "PUBG Mobile": { types1: ["1v1", "2v2", "4v4"], types2: ["TDM Warehouse", "Classic Room", "Sniper Training"] },
-            "Blood Strike": { types1: ["1v1", "2v2", "4v4"], types2: ["Battle Royal", "Squad Fight", "Hot Zone"] },
-            "DLS": { types1: ["1v1"], types2: ["Friendly Match", "Tournament Style"] }
-        };
-
-        window.filterByGame = (game) => {
-            document.querySelectorAll('.game-option').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            loadChallenges(game);
-        }
-
-        window.selectGame = (gameName) => {
-            document.getElementById('bet-game').value = gameName;
-            updateGameOptions();
-        };
-
-        window.updateGameOptions = () => {
-            const game = document.getElementById('bet-game').value;
-            const options = gameOptions[game];
-            document.getElementById('bet-type-1').innerHTML = options.types1.map(opt => `<option value="${opt}">${opt}</option>`).join('');
-            document.getElementById('bet-type-2').innerHTML = options.types2.map(opt => `<option value="${opt}">${opt}</option>`).join('');
-        };
-        updateGameOptions();
-
-        // --- CHALLENGES ---
-        function loadChallenges(filterGame = "Free Fire") {
-            onValue(ref(db, 'challenges'), (snap) => {
-                const list = document.getElementById('challenges-list');
-                list.innerHTML = "";
-                const data = snap.val();
-                if (data) {
-                    Object.keys(data).reverse().forEach(id => {
-                        const c = data[id];
-                        if (c.game === filterGame && c.status === "open") {
-                            list.innerHTML += `<div class="glass-card p-4 rounded-3xl mb-3 animate__animated animate__fadeIn">
-                                <div class="flex justify-between"><div><h4 class="font-black text-blue-500">${c.game}</h4><p class="text-[9px]">${c.type1} - ${c.type2}</p></div><p class="font-bold text-green-500">${c.bet_amount} HTG</p></div>
-                                <button onclick="openChallengeDetails('${id}')" class="w-full bg-blue-600 py-2 rounded-xl text-[10px] mt-2 font-black shadow-lg">REJWENN</button>
-                            </div>`;
-                        }
-                    });
-                } else {
-                     list.innerHTML = "<p class='text-gray-500 text-xs text-center'>Pa gen defi pou jwèt sa...</p>";
-                }
+            if(!inp.value.trim()) return;
+            push(ref(db, 'chat'), {
+                text: inp.value,
+                sender_id: auth.currentUser.uid,
+                sender_name: currentUserData.username,
+                timestamp: serverTimestamp()
             });
-        }
-        
-        // Open Join Modal
-        window.openChallengeDetails = (id) => {
-             onValue(ref(db, 'challenges/'+id), (snap) => {
-                 const c = snap.val();
-                 document.getElementById('join-game').innerText = c.game;
-                 document.getElementById('join-type').innerText = c.type1 + " / " + c.type2;
-                 document.getElementById('join-amount').innerText = c.bet_amount + " HTG";
-                 document.getElementById('join-room').innerText = c.room_id || "---";
-                 
-                 const confirmBtn = document.getElementById('confirm-join-btn');
-                 confirmBtn.onclick = () => acceptChallenge(id, c.bet_amount);
-                 
-                 toggleModal('join-modal', true);
-             }, {onlyOnce: true});
-        }
-
-        // Accept Challenge logic (Simple version)
-        window.acceptChallenge = (id, amount) => {
-             // Add logic here to deduct balance and update challenge status
-             alert("Sistèm sa ap disponib byento!");
-             toggleModal('join-modal', false);
-        }
-
-        // --- AUTH BUTTONS ---
-        document.getElementById('main-btn').onclick = async () => {
-            const em = document.getElementById('email').value.trim();
-            const pw = document.getElementById('password').value;
-            try {
-                if (isSignup) {
-                    const res = await createUserWithEmailAndPassword(auth, em, pw);
-                    await set(ref(db, `users/${res.user.uid}`), { username: document.getElementById('username').value, phone: document.getElementById('phone').value, balance: 0 });
-                    await sendEmailVerification(res.user);
-                    alert("Tcheke email ou!");
-                } else { await signInWithEmailAndPassword(auth, em, pw); }
-            } catch(e) { alert(e.message); }
+            inp.value = "";
         };
-        
-        document.getElementById('toggle-btn').onclick = () => {
-            isSignup = !isSignup;
-            document.getElementById('signup-fields').classList.toggle('hidden');
-            document.getElementById('main-btn').innerText = isSignup ? "ENSKRI" : "KONEKTE";
-            document.getElementById('mode-title').innerText = isSignup ? "Enskripsyon" : "Koneksyon";
-            document.getElementById('toggle-text').innerText = isSignup ? "Ou deja gen kont?" : "Poko gen kont?";
-            document.getElementById('toggle-btn').innerText = isSignup ? "Konekte" : "Kreyel isit la";
-        };
-
-        window.logout = () => signOut(auth);
-
-        // Upload Profile Pic Logic
-        document.getElementById('profile-upload').onchange = (e) => {
-             const file = e.target.files[0];
-             if(!file) return;
-             
-             // In a real app, upload to Storage. Here we simulate or use Base64/Cloudinary API
-             alert("Pou chanje foto, sistèm nan ap bezwen Firebase Storage aktive. Pou kounya n'ap itilize foto default la.");
-             // Placeholder logic
-        };
-
-        // Publish Challenge
-        document.getElementById('confirm-bet-btn').onclick = async () => {
-             const game = document.getElementById('bet-game').value;
-             const type1 = document.getElementById('bet-type-1').value;
-             const type2 = document.getElementById('bet-type-2').value;
-             const amount = document.getElementById('bet-amount').value;
-             const uid = document.getElementById('bet-uid').value;
-             
-             if(amount < 100) return alert("Miz minimòm lan se 100 HTG");
-             
-             try {
-                 await push(ref(db, 'challenges'), {
-                     game, type1, type2, bet_amount: amount, 
-                     creator_id: auth.currentUser.uid,
-                     uid_game: uid,
-                     status: 'open',
-                     created_at: serverTimestamp()
-                 });
-                 toggleModal('bet-modal', false);
-                 alert("Defi pibliye!");
-             } catch(e) { alert(e.message); }
-        }
 
     </script>
 </body>
